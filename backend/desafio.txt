@@ -1,0 +1,3 @@
+CRUD estabelecimentos
+busca por localização
+autenticação
