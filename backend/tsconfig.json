@@ -1,0 +1,36 @@
+{
+    "ts-node": {
+        "transpileOnly": true,
+        "respawn": true,
+        "ignoreWatch": "node_modules",
+        "noNotify": true
+    },
+    "compilerOptions": {
+        "target": "es2015",
+        "module": "commonjs",
+        "allowJs": true,
+        "outDir": "./build",
+        "rootDir": "./src",
+        "removeComments": true,
+        "typeRoots": ["./node_modules/@types", "src/types"],
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "baseUrl": ".",
+        "paths": {
+            "@config/*": ["./src/config/*"],
+            "@jobs/*": ["./src/jobs/*"],
+            "@services/*": ["./src/services/*"],
+            "@entities/*": ["src/entities/*"],
+            "@repositories/*": ["src/repositories/*"],
+            "@utils/*": ["./src/utils/*"],
+            "@controllers/*": ["src/controllers/*"],
+            "@middlewares/*": ["src/middlewares/*"],
+        }
+    },
+    "include": ["src/**/*"]
+}

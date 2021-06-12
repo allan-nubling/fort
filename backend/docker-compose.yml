@@ -1,0 +1,66 @@
+version: '3.7'
+
+services:
+    db:
+        image: postgres
+        restart: always
+        environment:
+            - POSTGRES_DB=$DB_SCHEMA
+            - POSTGRES_USER=$DB_USER
+            - POSTGRES_PASSWORD=$DB_PASSWORD
+        networks:
+            - app-network
+        ports:
+            - $DB_PORT:5432
+    api:
+        build:
+            context: .
+            dockerfile: Dockerfile.build
+        depends_on:
+            - db
+        container_name: api-fort
+        environment:
+            - NODE_ENV=production
+            - PORT=$PORT
+            - DB_USER=$DB_USER
+            - DB_PASSWORD=$DB_PASSWORD
+            - DB_HOST=db
+            - DB_PORT=$DB_PORT
+            - DB_SCHEMA=$DB_SCHEMA
+            - DB_DEBUG=$DB_DEBUG
+            - SYNC=$SYNC
+            - APP_KEY=$APP_KEY
+        networks:
+            - app-network
+        ports:
+            - '$PORT:3000'
+    dev:
+        build:
+            context: .
+        depends_on:
+            - db
+        container_name: api-dev
+        restart: unless-stopped
+        environment:
+            - NODE_ENV=development
+            - PORT=$PORT
+            - DB_USER=$DB_USER
+            - DB_PASSWORD=$DB_PASSWORD
+            - DB_HOST=db
+            - DB_PORT=$DB_PORT
+            - DB_SCHEMA=$DB_SCHEMA
+            - DB_DEBUG=$DB_DEBUG
+            - SYNC=$SYNC
+            - APP_KEY=$APP_KEY
+        volumes:
+            - .:/app/
+        networks:
+            - app-network
+        ports:
+            - '$PORT:3000'
+        command: npm run dev:docker
+
+networks:
+    app-network:
+        driver: bridge
+          
