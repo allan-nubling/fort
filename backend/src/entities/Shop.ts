@@ -10,9 +10,6 @@ export class Shop {
     @Column('varchar', { length: 512, nullable: false })
     name: string
 
-    @Column('varchar', { length: 1024, nullable: false })
-    street: string
-
     @ManyToOne(() => State, { onDelete: 'CASCADE' })
     @JoinColumn()
     state: State

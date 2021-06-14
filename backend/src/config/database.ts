@@ -7,7 +7,7 @@ import 'pg'
 import { Shop } from '@entities/Shop'
 import { State } from '@entities/State'
 import { User } from '@entities/User'
-import { injectStates } from '@utils/injectDummyData'
+import { injectData } from '@utils/injectDummyData'
 
 const { DB_USER, DB_HOST, DB_PASSWORD, DB_PORT, DB_DEBUG, DB_SCHEMA, SYNC } = process.env
 
@@ -42,7 +42,7 @@ export default class Database {
             await getConnection('default')
         } catch (error) {
             await createConnection(Database.config)
-            injectStates()
+            await injectData()
         }
     }
 }

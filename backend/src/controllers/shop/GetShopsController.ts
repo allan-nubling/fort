@@ -6,7 +6,14 @@ import { ShopRepository } from '@repositories/ShopRepository'
 class GetShopsController {
     static async handle(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { page = '0', limit, name, uf } = req.query as Record<string, string>
+            const {
+                page = '0',
+                limit,
+                name,
+                uf,
+                order_by: field = 'name',
+                order = 'asc'
+            } = req.query as Record<string, string>
 
             const url = `${req.protocol}://${req.get('host')}${req.path}`
 
@@ -24,7 +31,14 @@ class GetShopsController {
 
             const shopRepository = getCustomRepository(ShopRepository)
 
-            const [states, count] = await shopRepository.get({ page: parsedPage, limit: parsedLimit, name, uf })
+            const [shops, count] = await shopRepository.get({
+                page: parsedPage,
+                limit: parsedLimit,
+                name,
+                uf,
+                field,
+                order
+            })
 
             const infos = {
                 count,
@@ -37,7 +51,7 @@ class GetShopsController {
                 }${uf ? `&uf=${uf}` : ''}`
             }
 
-            res.json({ infos, states })
+            res.json({ infos, shops })
         } catch (err) {
             next(err)
         }
